@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="gpio" pkg="teapicking" type="gpio.py" output="screen">  
+  </node>
+  <arg name="joy_dev" default="/dev/input/js0" />
+  <node pkg="joy" type="joy_node" name="joy_node">
+    <param name="dev" value="$(arg joy_dev)" />
+    <param name="deadzone" value="0.05" />
+    <param name="autorepeat_rate" value="0" />
+  </node>
+  <!--include file="$(find rplidar_ros)/launch/rplidar.launch" />
+  <include file="$(find realsense2_camera)/launch/tea_cam.launch" /> 
+  <include file="$(find ar_track_alvar)/launch/ar_track_tea.launch" />
+  <include file="$(find tea_row_following)/launch/row_following.launch" /-->
+  <!--node name="tea_xytv" pkg="test_2dnav" type="tea_xytv.py" output="screen">   
+  </node-->
+  <!--node name="tea_transformation" pkg="test_2dnav" type="tea_transformation.py" output="screen">   
+  </node-->
+  <!--node name="tea_picontrol" pkg="test_2dnav" type="tea_picontrol.py" output="screen">  
+  </node-->
+</launch>

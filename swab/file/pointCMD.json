@@ -1,0 +1,30 @@
+{
+  "posts": [
+    {
+      "points": 2,
+      "via_point": [
+        {
+          "x": 1,
+          "y": 1,
+          "th": 1.56
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "th": 3.14
+        }
+      ],
+      "id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
