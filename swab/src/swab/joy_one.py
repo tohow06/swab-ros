@@ -22,8 +22,8 @@ def joy_remapping(msg):
     global count, mode, diff, count2
     buttons = msg.buttons
     axes = msg.axes
-    axes = map(lambda x:int(x*30),axes)  
-    LR,UD,_,_,_,_,_,_ = axes 
+    axes = map(lambda x:int(x*15),axes)  
+    LR,UD,_,_,_,_,_,_ = axes
     A,B,X,Y,LB,RB,back,start,_,_,_=buttons       
     if back == 1:        ## press back to shutdown
     	p = os.popen('shutdown now')
@@ -37,7 +37,7 @@ def joy_remapping(msg):
    	left=0
    	right=-LR
     if UD>0:
-        up=UD
+        up=UD*2
    	down=0
     else:
    	up=0

@@ -222,22 +222,24 @@ def goReadyPos():
     client.close()
     
     time.sleep(0.3)
-    cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,0,0,0,1,1,0,0)
+    cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,0,0,0,0,0,0,0)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((ip, port))
     client.send(("GET /cmd?=C01" + cmd).encode('utf-8'))
     client.close()
     print("finish!!")
 
-if __name__ == '__main__':
-    rospy.init_node('http_lai')
-    diff_topic = "/differential_turn"
-    joy_topic = "/joy_information"
-    position_topic = "/position"
-    turnLocation_topic = "/slam_out_pose"
-    mode_topic = "/mode"
-    goReadyPos()
-    rospy.Subscriber(joy_topic, String, joy_callback_lai,queue_size = 1, buff_size = 52428800)
 
-    rospy.spin()
+if __name__ == '__main__':
+    #rospy.init_node('http_lai')
+    #diff_topic = "/differential_turn"
+    #joy_topic = "/joy_information"
+    #position_topic = "/position"
+    #turnLocation_topic = "/slam_out_pose"
+    #mode_topic = "/mode"
+
+    #rospy.Subscriber(joy_topic, String, joy_callback_lai,queue_size = 1, buff_size = 52428800)
+
+    #rospy.spin()
     # Spin until ctrl + cl
+    goReadyPos()
