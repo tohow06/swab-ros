@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="gpio" pkg="teapicking" type="gpio.py" output="screen">  
+  <node name="gpio" pkg="swab" type="gpio.py" output="screen">  
   </node>
   <arg name="joy_dev" default="/dev/input/js0" />
   <node pkg="joy" type="joy_node" name="joy_node">
