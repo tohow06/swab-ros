@@ -51,7 +51,7 @@ def joy_remapping(msg):
     
     cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)        
     pub_joy.publish(cmd)
-    print cmd
+    #print cmd
     rate.sleep()
 
 
