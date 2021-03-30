@@ -9,7 +9,7 @@
 
   <node name="gpio" pkg="swab" type="gpio.py" output="screen">  
   </node>
-  <node name="joy_one" pkg="swab" type="joy_one.py" output="screen">  
+  <node name="joy_lai" pkg="swab" type="joy_lai.py" output="screen">  
   </node>
   <node name="http_lai" pkg="swab" type="http_lai.py" output="screen">  
   </node>

@@ -18,58 +18,19 @@ def mode_callback(msg):
     other_mode = msg.data
 
 
-def CarControl_callback(msg):
-    global count, mode, diff, count2
-    buttons = msg.buttons
-    axes = msg.axes       
-    a = buttons[1]
-    x = buttons[0]         #mode 4
-    y = buttons[3]         #stop testing
-    back = buttons[8]
-    LB = buttons[4]        #increse turning radius
-    LT = buttons[6]        #decrese turning radius
-    rate = rospy.Rate(4)
-    if back == 1:        ## press back to shutdown
-      p = os.popen('shutdown now')
-    if (a == 1 and other_mode < 2):           ## change mode:0-1
-        count += 1
-        mode = count % 2
-        pub_mode.publish(mode)
-    if (x == 1 and (other_mode == 4 or other_mode == 0)):           ## change mode:0-4
-        count2 += 1
-        temp = count2 % 2
-        if temp:
-            pub_mode.publish(4)
-        else:
-            pub_mode.publish(0)
-
-    if LB == 1 or LT == 1:                    ## change turning radius
-      if LB == 1:
-        if diff < 9:
-          diff += 1
-      elif LT == 1:
-        if diff > 1:
-          diff -= 1
-    Duty1=int(axes[1]*100)
-    Duty2=int(axes[3]*100)
-    string = "%04d %04d" %(Duty1, Duty2)
-    pub_joy.publish(string)
-    pub_diff.publish(diff)
-    print string
-    rate.sleep()
-
 def joy_remapping(msg):
     global count, mode, diff, count2
     buttons = msg.buttons
     axes = msg.axes
     axes = map(lambda x:int(x*100),axes)  
-    LR,UD,_,_,_,_ = axes 
-    X,A,B,Y,LB,RB,_,_,back,start,_,_=buttons       
+    LR,UD,_,_,_,_,_,_ = axes
+    A,B,X,Y,LB,RB,back,start,_,_,_=buttons       
     if back == 1:        ## press back to shutdown
     	p = os.popen('shutdown now')
     
     rate = rospy.Rate(HZ)
-    
+    UD = UD/2
+    LR = LR/8
     if LR>0:
     	left=LR
     	right=0
@@ -81,7 +42,7 @@ def joy_remapping(msg):
    	down=0
     else:
    	up=0
-   	down=-UD
+   	down=-UD/4
     spin=X
     front=A
     behind=B
@@ -91,7 +52,7 @@ def joy_remapping(msg):
     
     cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)        
     pub_joy.publish(cmd)
-    print cmd
+    #print cmd
     rate.sleep()
 
 

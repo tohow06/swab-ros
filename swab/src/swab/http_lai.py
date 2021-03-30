@@ -236,7 +236,7 @@ if __name__ == '__main__':
     position_topic = "/position"
     turnLocation_topic = "/slam_out_pose"
     mode_topic = "/mode"
-    goReadyPos()
+    #goReadyPos()
     rospy.Subscriber(joy_topic, String, joy_callback_lai,queue_size = 1, buff_size = 52428800)
 
     rospy.spin()
