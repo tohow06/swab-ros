@@ -21,7 +21,6 @@ ros package for swabbing machine
 
 ## Usage
 
-- Using xbox one controller
+- Test with gamepad
 
-        roscore
-        rosrun swab connect_joystick_one.py
+	roslaunch swab controlTestGamepad.launch
