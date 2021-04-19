@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #license removed for brevity
 #coding=utf-8
+import os
 import rospy
 from std_msgs.msg import String
 import cv2
@@ -71,8 +72,13 @@ def listener():
     		resized_cropped = cv2.resize(cropped, (int(width), int(height)))
 
     		# put text
-    		cv2.putText(resized_cropped,'depth', (resized_cropped.shape[1]//2 + 10 ,resized_cropped.shape[0]//2), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)
-    		cv2.circle(resized_cropped, (resized_cropped.shape[1]//2,resized_cropped.shape[0]//2), 5, (0,0,255), thickness=-1)
+    		cv2.putText(resized_cropped,'depth', (resized_cropped.shape[1]//2 + 20 ,resized_cropped.shape[0]//2+20), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)
+    		cv2.line(resized_cropped, (resized_cropped.shape[1]//2-10,resized_cropped.shape[0]//2),
+				 (resized_cropped.shape[1]//2+10,resized_cropped.shape[0]//2), (0,255,0), thickness=1)
+
+    		cv2.line(resized_cropped, (resized_cropped.shape[1]//2,resized_cropped.shape[0]//2-10),
+				 (resized_cropped.shape[1]//2,resized_cropped.shape[0]//2+10), (0,255,0), thickness=1)
+
     		cv2.imshow('camera', resized_cropped)
 
 		key = cv2.waitKey(100)
@@ -87,13 +93,6 @@ def listener():
     		elif (dataz < 12000):
         		# zoom out s
         		scale += 5  
-    		elif (key == 113):
-        		# quit q
-
-			capture.release()
-			cv2.destroyAllWindows()
-			rospy.signal_shutdown(Tokyo)
-        		break
 		else:
 			scale = scale
 
@@ -105,6 +104,16 @@ def listener():
         		scale = 5
     
 		#print(scale)
+
+
+    		if (key == 113):
+        		# quit q
+			#print("666")
+			capture.release()
+			cv2.destroyAllWindows()
+			rospy.signal_shutdown("tokyo shut down")
+        		break
+
 
 
 	rospy.spin()
