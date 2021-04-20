@@ -40,9 +40,9 @@ def listener():
 	# spin() simply keeps python from exiting until this node is stopped
 
 
-	capture = cv2.VideoCapture(-1)
+	capture = cv2.VideoCapture(1)
 
-	scale=25 #zoom scale
+	scale=100 #zoom scale
 
 	isTrue, frame = capture.read()
 	width = capture.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -67,7 +67,8 @@ def listener():
     		minX,maxX=centerX-radiusX,centerX+radiusX
     		minY,maxY=centerY-radiusY,centerY+radiusY
 
-    		cropped = frame[minX:maxX, minY:maxY]
+    		#cropped = frame[minX:maxX, minY:maxY]
+		cropped = frame
     		resized_cropped = cv2.resize(cropped, (int(width), int(height)))
 
     		# put text
@@ -79,8 +80,9 @@ def listener():
 		#print(key)
 
     		#119 w 115 s 113 q
+	rospy.spin()
 
-
+"""
     		if (dataz > 14000):
       			# zoom in w
         		scale -= 5  
@@ -107,8 +109,8 @@ def listener():
 		#print(scale)
 
 
-	rospy.spin()
-
+        	rospy.spin()
+"""
 
 
 if __name__ == '__main__':

@@ -4,44 +4,67 @@ from std_msgs.msg import String, Int16, UInt8
 from panel.msg import Sticks
 import os
 import json
+import time
 
 HZ=4
 
-button_value =0
+
 
 def button_callback(msg):
-    global button_value
     button_value = msg.data
+    up=down=left=right=front=behind=spin=rcm_en=ee_en=STOP=0
+    if button_value == 1:
+        #go forward
+        ee_en = 1
+        front = 50
+        spin = 20
+        cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)
+        pub_joy.publish(cmd)
+        time.sleep(5)
+        #stay and swab
+        front = 0
+        cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)
+        pub_joy.publish(cmd)
+        time.sleep(5)
+        #go backward
+        behind = 50
+        spin = 0
+        cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)
+        pub_joy.publish(cmd)
+        time.sleep(5)
+        # stay
+        behind = 0
+        cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)
+        
+        pub_joy.publish(cmd)
+    
+
 
 def sticks_remapping(msg):
-    global button_value
 	
     up=down=left=right=front=behind=spin=rcm_en=ee_en=STOP=0
 
     x = msg.x
     y = msg.y
-    z = msg.z 
-    spin = button_value    
+    z = msg.z  
 
     rate = rospy.Rate(HZ)
     
-    if y < 11000:
+    if y < 17500:
     	up=50
     	down=0
-    elif y > 15000:
-   	up=0
-    	down=50
-    if x < 11000:
+    elif y > 22500:
+        up=0
+        down=50
+    if x < 17500:
     	right=50
-    	left=0
-    elif x > 15000:
-   	right=0
-    	left=50
+    	left=0 #go backward
+    elif x > 22500:
+    	right=0
+        left=50
     
     cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)        
     pub_joy.publish(cmd)
-
-    print cmd
     rate.sleep()
 
  

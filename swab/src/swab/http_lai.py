@@ -153,7 +153,7 @@ def joy_callback(msg):
 def joy_callback_lai(msg):
     global concerto_data
     joy_data = msg.data
-
+    print(joy_data)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((ip, port))
     client.send(("GET /cmd?=C01" + joy_data).encode('utf-8'))
