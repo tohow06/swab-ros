@@ -49,21 +49,9 @@ def sticks_remapping(msg):
     z = msg.z  
 
     rate = rospy.Rate(HZ)
+
     
-    if y < 17500:
-    	up=50
-    	down=0
-    elif y > 22500:
-        up=0
-        down=50
-    if x < 17500:
-    	right=50
-    	left=0 #go backward
-    elif x > 22500:
-    	right=0
-        left=50
-    
-    cmd = "%03d*%03d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (up,down,left,right,front,behind,spin,rcm_en,ee_en,STOP,0)        
+    cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (x,y,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
     pub_joy.publish(cmd)
     rate.sleep()
 

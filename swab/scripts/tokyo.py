@@ -62,8 +62,8 @@ def listener():
         minX,maxX=centerX-radiusX,centerX+radiusX
         minY,maxY=centerY-radiusY,centerY+radiusY
 
-        cropped = frame[minX:maxX, minY:maxY]
-        #cropped = frame
+        #cropped = frame[minX:maxX, minY:maxY]
+        cropped = frame
         resized_cropped = cv2.resize(cropped, (int(width), int(height)))
 
         # put text
