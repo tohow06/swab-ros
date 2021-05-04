@@ -33,15 +33,6 @@ if __name__ == '__main__':
         talker()
         tof.stop_ranging()
         tof.close()
-    except rospy.ROSInterruptException: pass
-
-'''
-for count in range(1, 101):
-    distance = tof.get_distance()
-    if distance > 0:
-        print("%d mm, %d cm, %d" % (distance, (distance/10), count))
-
-    time.sleep(timing/1000000.00)
-tof.stop_ranging()
-tof.close()
-'''
+    except rospy.ROSInterruptException:
+        rospy.signal_shutdown("tof shut down")
+        pass

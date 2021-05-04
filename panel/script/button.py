@@ -57,9 +57,12 @@ def talker():
 		#rospy.loginfo(msg)
 		pub.publish(msg)
 		rate.sleep()
-		#GPIO.cleanup()
+
 if __name__ == '__main__':
-	try:
-		talker()
-	except rospy.ROSInterruptException:
-		pass
+    try:
+        talker()
+    except rospy.ROSInterruptException:
+        GPIO.cleanup()
+    except KeyboardInterrupt:
+        GPIO.cleanup()
+    pass
