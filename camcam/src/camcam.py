@@ -109,9 +109,9 @@ class image_converter:
             cv2.fillPoly(resized_cropped, [button_down], down_color)
             cv2.fillPoly(resized_cropped, [button_left], left_color)
             cv2.fillPoly(resized_cropped, [button_right], right_color)
-            cv2.rectangle(resized_cropped,(590,450),(640,480),(255,255,255),-1)
-            cv2.rectangle(resized_cropped,(590,450),(640,480),info_color,2)
-            cv2.putText(resized_cropped, swabing_info, (600,470), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
+            cv2.rectangle(resized_cropped,(500,400),(640,480),(255,255,255),-1)
+            cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,2)
+            cv2.putText(resized_cropped, swabing_info, (500,400), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
 
         else:
             cv2.putText(resized_cropped,"PREPARING...", (resized_cropped.shape[1]//2-20, resized_cropped.shape[0]//2), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)
