@@ -6,6 +6,8 @@ import os
 import json
 import time
 
+button_value = 0
+
 HZ=10
 tofd = 0
 
@@ -47,7 +49,7 @@ def button_callback(msg):
         time.sleep(dis/dis_per_sec)
         # stay
         behind = 0
-        cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)
+        cmd = "%05d*%05d*%03d*%0         3d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)
         pub_joy.publish(cmd)
 
 '''
@@ -55,14 +57,46 @@ def button_callback(msg):
     global button_value, dis_per_sec 
     button_value = msg.data
     up=down=left=right=front=behind=spin=rcm_en=ee_en=STOP=0
-    behind=160
     if button_value !=0:
+
+        #behind=500
+        #cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        #pub_joy.publish(cmd)
+
+
+        front=1
         cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
         pub_joy.publish(cmd)
 
+        time.sleep(0.001)
+
+        front=0
+        cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        pub_joy.publish(cmd)
+
+        ee_en=1
+        spin = 20
+        cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        pub_joy.publish(cmd)
+
+        time.sleep(5)
+
+        ee_en=0
+        spin=0
+        cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        pub_joy.publish(cmd)
+
+        behind=1000
+        cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        pub_joy.publish(cmd)
+        time.sleep(7.5)
+        
+        behind=0
+        cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        pub_joy.publish(cmd)
 
 def sticks_remapping(msg):
-	
+    global button_value
     up=down=left=right=front=behind=spin=rcm_en=ee_en=STOP=0
 
     x = msg.x

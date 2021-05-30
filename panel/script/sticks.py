@@ -45,13 +45,6 @@ import busio
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 
-c1_max = 17120
-c1_min = 10112
-c2_max = 17056
-c2_min = 9809
-c3_max = 18033
-c3_min = 8576
-
 
 def talker():
 	pub = rospy.Publisher('sticks', Sticks, queue_size=10)

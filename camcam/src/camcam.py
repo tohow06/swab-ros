@@ -57,9 +57,9 @@ class image_converter:
         if mode == 0:
             self.old_tofd = tofd
 
-        if (tofd > 0):
+        if (True):
             # put text
-            cv2.putText(resized_cropped,"depth: " + str(self.old_tofd), (width_re//2 + 20+tip_woffset ,height_re//2+20+tip_hoffset), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)
+            #cv2.putText(resized_cropped,"depth: " + str(self.old_tofd), (width_re//2 + 20+tip_woffset ,height_re//2+20+tip_hoffset), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)
             cv2.line(resized_cropped, (width_re//2-10+tip_woffset,height_re//2+tip_hoffset), (width_re//2+10+tip_woffset,height_re//2+tip_hoffset), (0,255,0), thickness=2)
             cv2.line(resized_cropped, (width_re//2+tip_woffset,height_re//2-10+tip_hoffset), (width_re//2+tip_woffset,height_re//2+10+tip_hoffset), (0,255,0), thickness=2)
             cv2.circle(resized_cropped, (width_re//2+tip_woffset,height_re//2+tip_hoffset), 20, (0,255,0), thickness=2)
