@@ -20,7 +20,8 @@ tofd = 0
 scale=50
 
 mode = 0
-switch_state = "0000"  #up, down, left, right
+switch_state = "0000"  #down,up,right,left
+swab_state = 0
 
 class image_converter:
 
@@ -33,9 +34,10 @@ class image_converter:
         rospy.Subscriber("tof_data", UInt16, tof_callback) #String or Sticks
         rospy.Subscriber('button_value', UInt8, button_callback)
         rospy.Subscriber('limit_switch_state', String, limit_switch_callback)
+        rospy.Subscriber("swab_status",UInt8,swab_state_callback)
         self.old_tofd = 0
     def callback(self,data):
-        global scale, mode, switch_state
+        global scale, mode, switch_state, swab_state
         global dataz
         
         try:
@@ -63,18 +65,19 @@ class image_converter:
         button_up  = np.array([[240, 0], [400, 0], [350,30], [290, 30]], np.int32)
         button_down  = np.array([[240, 480], [400, 480], [350, 450], [290, 450]], np.int32)
 
-        color_searching = (10,255,0)
-        color_swabing = (0,0,255)
+        color_searching = (100,255,0)
+        color_swabing = (0,128,255)
+        color_warning = (0,0,255) 
 
 
-        if mode == 0:
+        if swab_state == 0:
             self.old_tofd = tofd
             up_color = color_searching
             down_color = color_searching
             left_color = color_searching
             right_color = color_searching
             info_color = color_searching
-            swabing_info = "Searching Target..."
+            swabing_info = "Searching......"
         else:
             up_color = color_swabing
             down_color = color_swabing
@@ -84,25 +87,25 @@ class image_converter:
             swabing_info = "Swabing......"
 
         if switch_state != "0000":
-            info_color = color_swabing
+            info_color = color_warning
             if switch_state == "1000":
-                up_color = color_swabing
-                swabing_info = "Up limit"
-            elif switch_state == "0100":
-                down_color = color_swabing
+                down_color = color_warning
                 swabing_info = "Down limit"
+            elif switch_state == "0100":
+                up_color = color_warning
+                swabing_info = "Up limit"
             elif switch_state == "0010":
-                left_color = color_swabing
-                swabing_info = "Left limit"
-            elif switch_state == "0001":
-                right_color = color_swabing
+                right_color = color_warning
                 swabing_info = "Right limit"
+            elif switch_state == "0001":
+                left_color = color_warning
+                swabing_info = "Left limit"
 
         if (True):
             # put text
             cv2.line(resized_cropped, (width_re//2-10+tip_woffset,height_re//2+tip_hoffset), (width_re//2+10+tip_woffset,height_re//2+tip_hoffset), info_color, thickness=2)
             cv2.line(resized_cropped, (width_re//2+tip_woffset,height_re//2-10+tip_hoffset), (width_re//2+tip_woffset,height_re//2+10+tip_hoffset), info_color, thickness=2)
-            cv2.circle(resized_cropped, (width_re//2+tip_woffset,height_re//2+tip_hoffset), 20, (0,255,0), thickness=2)
+            cv2.circle(resized_cropped, (width_re//2+tip_woffset,height_re//2+tip_hoffset), 20, info_color, thickness=2)
             # draw the working space button
 
             cv2.fillPoly(resized_cropped, [button_up], up_color)
@@ -110,8 +113,8 @@ class image_converter:
             cv2.fillPoly(resized_cropped, [button_left], left_color)
             cv2.fillPoly(resized_cropped, [button_right], right_color)
             cv2.rectangle(resized_cropped,(500,400),(640,480),(255,255,255),-1)
-            cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,2)
-            cv2.putText(resized_cropped, swabing_info, (500,400), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
+            cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,4)
+            cv2.putText(resized_cropped, swabing_info, (520,450), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
 
         else:
             cv2.putText(resized_cropped,"PREPARING...", (resized_cropped.shape[1]//2-20, resized_cropped.shape[0]//2), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)
@@ -170,9 +173,12 @@ def button_callback(msg):
 
 def limit_switch_callback(msg): 
     global switch_state
-    button_value = msg.data
-    switch_state = button_value
+    switch_state = msg.data
+     
 
+def swab_state_callback(msg):
+    global swab_state
+    swab_state = msg.data
 
 
 def main(args):

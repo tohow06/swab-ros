@@ -7,6 +7,7 @@ import json
 import time
 
 button_value = 0
+swab_status = 0
 
 HZ=10
 tofd = 0
@@ -63,10 +64,12 @@ def button_callback(msg):
         #cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
         #pub_joy.publish(cmd)
 
-
+        
         front=1
         cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        swab_status = 1
         pub_joy.publish(cmd)
+        pub_status.publish(swab_status)
 
         time.sleep(0.001)
 
@@ -93,8 +96,10 @@ def button_callback(msg):
         
         behind=0
         cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
+        swab_status = 0
         pub_joy.publish(cmd)
-
+        pub_status.publish(swab_status)
+        
 def sticks_remapping(msg):
     global button_value
     up=down=left=right=front=behind=spin=rcm_en=ee_en=STOP=0
@@ -116,6 +121,7 @@ if __name__ == '__main__':
     rospy.init_node('panel_info_process')
  
     pub_joy = rospy.Publisher('joy_information', String, queue_size=1)
+    pub_status = rospy.Publisher('swab_status', UInt8, queue_size=1)
 
     rospy.Subscriber('button_value', UInt8, button_callback, queue_size = 1, buff_size = 52428800)
     rospy.Subscriber('sticks', Sticks , sticks_remapping, queue_size = 1, buff_size = 52428800)

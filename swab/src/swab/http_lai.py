@@ -152,11 +152,15 @@ def joy_callback(msg):
 
 def joy_callback_lai(msg):
     global concerto_data
+    limit_data = "0000"
     joy_data = msg.data
     print(joy_data)
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((ip, port))
     client.send(("GET /cmd?=C01" + joy_data).encode('utf-8'))
+    limit_data = client.recv(1024)
+    limit_pub.publish(str(ord(limit_data[0]))+str(ord(limit_data[1]))+str(ord(limit_data[2]))+str(ord(limit_data[3])))
+
     client.close()
 
 
@@ -237,6 +241,7 @@ if __name__ == '__main__':
     turnLocation_topic = "/slam_out_pose"
     mode_topic = "/mode"
     #goReadyPos()
+    limit_pub = rospy.Publisher("limit_switch_state",String,queue_size=10)
     rospy.Subscriber(joy_topic, String, joy_callback_lai,queue_size = 1, buff_size = 52428800)
 
     rospy.spin()
