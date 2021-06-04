@@ -45,20 +45,28 @@ class image_converter:
         except CvBridgeError as e:
             print(e)
 
+        tip_woffset = 0
+        tip_hoffset = 100        
+
         width = cv_image.shape[1]
         height = cv_image.shape[0]
-        centerX,centerY=int(height/2),int(width/2)
+        # zoom in & out based on target center 
+        centerX,centerY=int(height/2+tip_hoffset),int(width/2)
         # set coordinates
-        radiusX,radiusY= int(((1/scale)*0.5)*height),int((1/scale*0.5)*width)
-        minX,maxX=centerX-radiusX,centerX+radiusX
+        
+
+        radiusX_up = int((1/scale)*(0.5*height+tip_hoffset))
+        radiusX_down = int((1/scale)*(0.5*height-tip_hoffset))
+        radiusY = int((1/scale)*(0.5*width))
+        minX,maxX=centerX-radiusX_up,centerX+radiusX_down
+        print(minX,"   ",maxX)
         minY,maxY=centerY-radiusY,centerY+radiusY
 
         cropped = cv_image[minX:maxX, minY:maxY]
         resized_cropped = cv2.resize(cropped, (int(width), int(height)))
         width_re = resized_cropped.shape[1]
         height_re = resized_cropped.shape[0]
-        tip_woffset = 0
-        tip_hoffset = 100
+        
         # working space button parameter setting
         button_left  = np.array([[0, 160], [0, 320], [30, 270], [30, 210]], np.int32)
         button_right  = np.array([[640, 160], [640, 320], [610, 270], [610, 210]], np.int32)
@@ -105,11 +113,11 @@ class image_converter:
             # put text
             # target_x , target_y = screen center
 
-            target_x = width_re//2 + tip_woffset
-            target_y = height_re//2 + tip_hoffset
-            cv2.line(resized_cropped, (target_x-10,target_y)*scale, (target_x+10,target_y)*scale, info_color, thickness=2)
-            cv2.line(resized_cropped, (target_x,target_y-10)*scale, (target_x,target_y+10)*scale, info_color, thickness=2)
-            cv2.circle(resized_cropped, (target_x,target_y)*scale, 20*scale, info_color, thickness=2)
+            target_x = (width_re//2 + tip_woffset)
+            target_y = (height_re//2 + tip_hoffset)
+            cv2.line(resized_cropped, (target_x-10,target_y), (target_x+10,target_y), info_color, thickness=2)
+            cv2.line(resized_cropped, (target_x,target_y-10), (target_x,target_y+10), info_color, thickness=2)
+            cv2.circle(resized_cropped, (target_x,target_y), 20, info_color, thickness=2)
             # draw the working space button
 
             cv2.fillPoly(resized_cropped, [button_up], up_color)
