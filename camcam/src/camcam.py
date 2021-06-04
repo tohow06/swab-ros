@@ -17,7 +17,7 @@ datax = " "
 datay = " "
 dataz = 20000
 tofd = 0
-scale=50
+scale = 1.0 # magnification >1 , <=100 , step = 0.1
 
 mode = 0
 switch_state = "0000"  #down,up,right,left
@@ -49,7 +49,7 @@ class image_converter:
         height = cv_image.shape[0]
         centerX,centerY=int(height/2),int(width/2)
         # set coordinates
-        radiusX,radiusY= int(scale*height/100),int(scale*width/100)
+        radiusX,radiusY= int(((1/scale)*0.5)*height),int((1/scale*0.5)*width)
         minX,maxX=centerX-radiusX,centerX+radiusX
         minY,maxY=centerY-radiusY,centerY+radiusY
 
@@ -57,7 +57,7 @@ class image_converter:
         resized_cropped = cv2.resize(cropped, (int(width), int(height)))
         width_re = resized_cropped.shape[1]
         height_re = resized_cropped.shape[0]
-        tip_woffset = 50
+        tip_woffset = 0
         tip_hoffset = 100
         # working space button parameter setting
         button_left  = np.array([[0, 160], [0, 320], [30, 270], [30, 210]], np.int32)
@@ -103,9 +103,13 @@ class image_converter:
 
         if (True):
             # put text
-            cv2.line(resized_cropped, (width_re//2-10+tip_woffset,height_re//2+tip_hoffset), (width_re//2+10+tip_woffset,height_re//2+tip_hoffset), info_color, thickness=2)
-            cv2.line(resized_cropped, (width_re//2+tip_woffset,height_re//2-10+tip_hoffset), (width_re//2+tip_woffset,height_re//2+10+tip_hoffset), info_color, thickness=2)
-            cv2.circle(resized_cropped, (width_re//2+tip_woffset,height_re//2+tip_hoffset), 20, info_color, thickness=2)
+            # target_x , target_y = screen center
+
+            target_x = width_re//2 + tip_woffset
+            target_y = height_re//2 + tip_hoffset
+            cv2.line(resized_cropped, (target_x-10,target_y)*scale, (target_x+10,target_y)*scale, info_color, thickness=2)
+            cv2.line(resized_cropped, (target_x,target_y-10)*scale, (target_x,target_y+10)*scale, info_color, thickness=2)
+            cv2.circle(resized_cropped, (target_x,target_y)*scale, 20*scale, info_color, thickness=2)
             # draw the working space button
 
             cv2.fillPoly(resized_cropped, [button_up], up_color)
@@ -129,17 +133,17 @@ class image_converter:
 
         if (dataz > 21500 or key == 119):
             # zoom in
-            scale -= 1  
+            scale += 0.1  
         elif (dataz < 18500 or key == 115):
             # zoom out
-            scale += 1  
+            scale -= 0.1  
         else:
             scale = scale
 
-        if(scale > 50):
-            scale = 50
+        if(scale > 100):
+            scale = 100
 
-        if(scale == 0):
+        if(scale <= 1):
             scale = 1
         if (key == 113):
             # quit q
