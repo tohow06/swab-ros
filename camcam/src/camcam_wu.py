@@ -46,7 +46,15 @@ class image_converter:
             print(e)
 
         tip_woffset = 0
-        tip_hoffset = 100        
+
+        L = 114.83
+        h = 480
+        d = 16.17
+        beta = 0.823
+
+        x = h/2 -((L-(d/np.tan(beta/2)))/L)*(h/2)
+        tip_hoffset = x 
+       
 
         width = cv_image.shape[1]
         height = cv_image.shape[0]
