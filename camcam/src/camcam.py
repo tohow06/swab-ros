@@ -54,12 +54,10 @@ class image_converter:
         centerX,centerY=int(height/2+tip_hoffset),int(width/2)
         # set coordinates
         
-
         radiusX_up = int((1/scale)*(0.5*height+tip_hoffset))
         radiusX_down = int((1/scale)*(0.5*height-tip_hoffset))
         radiusY = int((1/scale)*(0.5*width))
         minX,maxX=centerX-radiusX_up,centerX+radiusX_down
-        print(minX,"   ",maxX)
         minY,maxY=centerY-radiusY,centerY+radiusY
 
         cropped = cv_image[minX:maxX, minY:maxY]
@@ -120,13 +118,13 @@ class image_converter:
             cv2.circle(resized_cropped, (target_x,target_y), 20, info_color, thickness=2)
             # draw the working space button
 
-            cv2.fillPoly(resized_cropped, [button_up], up_color)
-            cv2.fillPoly(resized_cropped, [button_down], down_color)
-            cv2.fillPoly(resized_cropped, [button_left], left_color)
-            cv2.fillPoly(resized_cropped, [button_right], right_color)
-            cv2.rectangle(resized_cropped,(500,400),(640,480),(255,255,255),-1)
-            cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,4)
-            cv2.putText(resized_cropped, swabing_info, (520,450), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
+            # cv2.fillPoly(resized_cropped, [button_up], up_color)
+            # cv2.fillPoly(resized_cropped, [button_down], down_color)
+            # cv2.fillPoly(resized_cropped, [button_left], left_color)
+            # cv2.fillPoly(resized_cropped, [button_right], right_color)
+            # cv2.rectangle(resized_cropped,(500,400),(640,480),(255,255,255),-1)
+            # cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,4)
+            # cv2.putText(resized_cropped, swabing_info, (520,450), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
 
         else:
             cv2.putText(resized_cropped,"PREPARING...", (resized_cropped.shape[1]//2-20, resized_cropped.shape[0]//2), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)

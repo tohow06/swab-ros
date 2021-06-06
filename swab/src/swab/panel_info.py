@@ -64,7 +64,7 @@ def button_callback(msg):
         #cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
         #pub_joy.publish(cmd)
 
-        
+        '''
         front=1
         cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
         swab_status = 1
@@ -76,12 +76,12 @@ def button_callback(msg):
         front=0
         cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
         pub_joy.publish(cmd)
-
+'''
         ee_en=1
         spin = 20
         cmd = "%05d*%05d*%03d*%03d*%01d*%01d*%01d*%01d*%01d*%01d*%021d" % (0,0,0,0,front,behind,spin,rcm_en,ee_en,STOP,0)        
         pub_joy.publish(cmd)
-
+'''
         time.sleep(5)
 
         ee_en=0
@@ -99,7 +99,7 @@ def button_callback(msg):
         swab_status = 0
         pub_joy.publish(cmd)
         pub_status.publish(swab_status)
-        
+        '''
 def sticks_remapping(msg):
     global button_value
     up=down=left=right=front=behind=spin=rcm_en=ee_en=STOP=0
