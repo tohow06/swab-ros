@@ -15,7 +15,7 @@ from panel.msg import Sticks
 
 datax = " "
 datay = " "
-dataz = 20000
+dataz = 0
 tofd = 0
 scale = 1.0 # magnification >1 , <=100 , step = 0.1
 
@@ -78,9 +78,9 @@ class image_converter:
         button_up  = np.array([[240, 0], [400, 0], [350,30], [290, 30]], np.int32)
         button_down  = np.array([[240, 480], [400, 480], [350, 450], [290, 450]], np.int32)
 
-        color_searching = (100,255,0)
-        color_swabing = (0,128,255)
-        color_warning = (0,0,255) 
+        color_searching = (100,255,0)  # green
+        color_swabing = (0,128,255)    # orange 
+        color_warning = (0,0,255)      # red
 
 
         if swab_state == 0:
@@ -114,7 +114,7 @@ class image_converter:
                 left_color = color_warning
                 swabing_info = "Left limit"
 
-        if (True):
+        if (dataz != 0):
             # put text
             # target_x , target_y = screen center
 
@@ -122,16 +122,18 @@ class image_converter:
             target_y = (height_re//2 + tip_hoffset)
             cv2.line(resized_cropped, (target_x-10,target_y), (target_x+10,target_y), info_color, thickness=2)
             cv2.line(resized_cropped, (target_x,target_y-10), (target_x,target_y+10), info_color, thickness=2)
-            cv2.circle(resized_cropped, (target_x,target_y), 20, info_color, thickness=2)
+            cv2.circle(resized_cropped, (target_x,target_y), 40, info_color, thickness=2)
             # draw the working space button
 
-            # cv2.fillPoly(resized_cropped, [button_up], up_color)
-            # cv2.fillPoly(resized_cropped, [button_down], down_color)
-            # cv2.fillPoly(resized_cropped, [button_left], left_color)
-            # cv2.fillPoly(resized_cropped, [button_right], right_color)
-            # cv2.rectangle(resized_cropped,(500,400),(640,480),(255,255,255),-1)
-            # cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,4)
-            # cv2.putText(resized_cropped, swabing_info, (520,450), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
+            if switch_state != "0000" or swab_state != 0:
+                cv2.fillPoly(resized_cropped, [button_up], up_color)
+                cv2.fillPoly(resized_cropped, [button_down], down_color)
+                cv2.fillPoly(resized_cropped, [button_left], left_color)
+                cv2.fillPoly(resized_cropped, [button_right], right_color)
+
+            cv2.rectangle(resized_cropped,(500,400),(640,480),(255,255,255),-1)
+            cv2.rectangle(resized_cropped,(500,400),(640,480),info_color,4)
+            cv2.putText(resized_cropped, swabing_info, (520,450), cv2.FONT_HERSHEY_PLAIN,1, info_color, 1, cv2.LINE_AA)
 
         else:
             cv2.putText(resized_cropped,"PREPARING...", (resized_cropped.shape[1]//2-20, resized_cropped.shape[0]//2), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0,255,255), thickness=1)

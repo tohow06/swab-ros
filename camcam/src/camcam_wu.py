@@ -45,20 +45,19 @@ class image_converter:
         except CvBridgeError as e:
             print(e)
 
+        # offset algorithm
         tip_woffset = 0
-
         L = 114.83
         h = 480
         d = 16.17
         beta = 0.823
-
         x = h/2 -((L-(d/np.tan(beta/2)))/L)*(h/2)
         tip_hoffset = x 
        
 
         width = cv_image.shape[1]
         height = cv_image.shape[0]
-        # zoom in & out based on target center 
+        # zoom in & out based on screen center 
         centerX,centerY=int(height/2),int(width/2)
         # set coordinates
         
