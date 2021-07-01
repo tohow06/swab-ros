@@ -1,3 +1,8 @@
+<!--
+    this file will launch all node at one command 
+    roslaunch swab testALL.launch
+-->
+
 <?xml version="1.0"?>
 <launch>
 

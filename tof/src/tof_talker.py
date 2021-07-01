@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# this file will start reading VL53L0X using i2c and publish to '/tof_data'
+
+
 import time
 import VL53L0X
 import rospy
