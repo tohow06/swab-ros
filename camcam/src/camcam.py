@@ -1,4 +1,25 @@
 #!/usr/bin/env python
+""" 
+-------------------------
+Author : Jing-Shiang Wuu, Li-Wei Yang
+Date : 2021/7/1
+Institution : National Taiwan University 
+Department : Bio-Mechatronics Engineering
+Status : Senior, Junior
+-------------------------
+
+Description:
+    It is a program to recieve all the sensor informatoin, including tof(may be deleted), limit switch, button, sticks and image. 
+    we plot some important information on the image:
+    1. swabing target: there is a tip_offset from the center of image
+    2. swabing status: showing the swabing status:searching, swabing in the lower right corner of image
+    3. warning information: if the robot touch the limit switch, there is a warning information in the lower right corner of image too.
+    the image will zoom in/out if
+        * dataz > 21500 ---> zoom in
+        * dataz < 18500 ---> zoom out
+    the maximum magnification is 10
+"""
+
 from __future__ import print_function
 import os
 import time
@@ -26,8 +47,7 @@ swab_state = 0
 class image_converter:
 
     def __init__(self):
-        self.image_pub = rospy.Publisher("image_topic_2",Image,queue_size=10)
-
+        # self.image_pub = rospy.Publisher("image_topic_2",Image,queue_size=10)
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber("/usb_cam/image_raw",Image,self.callback)
         rospy.Subscriber("sticks", Sticks, stick_callback) #String or Sticks
@@ -165,10 +185,10 @@ class image_converter:
             rospy.signal_shutdown("tokyo shut down")
             
 
-        try:
-            self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
-        except CvBridgeError as e:
-            print(e)
+        # try:
+        #     self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
+        # except CvBridgeError as e:
+        #     print(e)
 
 def stick_callback(data):
 
